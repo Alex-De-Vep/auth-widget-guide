@@ -1,38 +1,41 @@
-# sv
+# TrustedWidget Guide
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+Документационный сайт по установке, конфигурации и стилизации `trusted-widget`.
 
-## Creating a project
+## Стек
 
-If you're seeing this, you've probably already done this step. Congrats!
+- React + TypeScript + Vite
+- MUI + `@mui/icons-material`
+- React Router
+- Playwright для smoke e2e
 
-```sh
-# create a new project in the current directory
-npx sv create
-
-# create a new project in my-app
-npx sv create my-app
-```
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+## Локальный запуск
 
 ```sh
+npm install
 npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
 ```
 
-## Building
-
-To create a production version of your app:
+## Проверки
 
 ```sh
+npm run lint
 npm run build
+npm run test
 ```
 
-You can preview the production build with `npm run preview`.
+## Деплой в GitHub Pages
 
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+Проект собирается с `base: /auth-widget-guide/` и публикуется как SPA в GitHub Pages.
+
+```sh
+npm run deploy
+```
+
+Во время сборки `dist/index.html` копируется в `dist/404.html`, чтобы прямые переходы на вложенные роуты корректно восстанавливались в GitHub Pages.
+
+## Маршруты
+
+- `/` — старт и установка
+- `/configuration` — конфигурация TrustedWidget
+- `/styling-and-integration` — стилизация, SSO и ресурсы
