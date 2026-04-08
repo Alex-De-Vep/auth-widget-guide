@@ -29,7 +29,7 @@ export const theme = createTheme({
 		}
 	},
 	shape: {
-		borderRadius: 20
+		borderRadius: 16
 	},
 	typography: {
 		fontFamily: '"Manrope Variable", "Manrope", sans-serif',
@@ -104,7 +104,7 @@ export const theme = createTheme({
 		MuiChip: {
 			styleOverrides: {
 				root: {
-					borderRadius: 999
+					borderRadius: 1.5
 				}
 			}
 		},
@@ -114,7 +114,7 @@ export const theme = createTheme({
 			},
 			styleOverrides: {
 				root: {
-					borderRadius: 999,
+					borderRadius: 1.5,
 					paddingInline: 18
 				}
 			}
