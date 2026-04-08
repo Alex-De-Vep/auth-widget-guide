@@ -24,7 +24,7 @@ export function PageHeader({
 				position: 'relative',
 				overflow: 'hidden',
 				mb: 4,
-				borderRadius: 6,
+				borderRadius: 5,
 				p: { xs: 3, md: 4.5 },
 				background:
 					'linear-gradient(135deg, rgba(14, 58, 95, 0.98) 0%, rgba(36, 73, 113, 0.96) 52%, rgba(214, 106, 78, 0.9) 100%)',
