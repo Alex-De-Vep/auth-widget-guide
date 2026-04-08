@@ -34,8 +34,6 @@ npm run test
 
 Если у репозитория ещё не переключён источник публикации, откройте `Settings -> Pages` и установите `Source: GitHub Actions`.
 
-Если в репозитории уже существует environment `github-pages` с branch protection rules, текущий workflow использует отдельное environment `pages-production`, чтобы деплой из `master` не блокировался этими ограничениями.
-
 ## Маршруты
 
 - `/` — старт и установка
