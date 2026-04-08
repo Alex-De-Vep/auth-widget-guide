@@ -1,5 +1,7 @@
 import ArrowForwardRounded from '@mui/icons-material/ArrowForwardRounded';
 import HubRounded from '@mui/icons-material/HubRounded';
+import LoginRounded from '@mui/icons-material/LoginRounded';
+import StorageRounded from '@mui/icons-material/StorageRounded';
 import TaskAltRounded from '@mui/icons-material/TaskAltRounded';
 import Button from '@mui/material/Button';
 import Chip from '@mui/material/Chip';
@@ -7,37 +9,52 @@ import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { Link } from 'react-router-dom';
-import { CodeBlock } from '../components/CodeBlock';
 import { DocSection } from '../components/DocSection';
-import { InlineCode } from '../components/InlineCode';
 import { PageHeader } from '../components/PageHeader';
 import { docsRoutes, homeSections } from '../content/navigation';
-import { installSnippet } from '../content/codeSamples';
 
-const workflowSteps = [
+const startVariants = [
 	{
-		title: 'Подключите пакет',
-		description: 'Установите trusted-widget в клиентское приложение и сохраните базовый конфиг.'
+		title: 'Старт для frontend',
+		description:
+			'Подробный сценарий полной интеграции Trusted Widget, где frontend получает access token и синхронизирует его с backend.',
+		to: '/frontend-start',
+		icon: LoginRounded,
+		accent: '#A64932',
+		chips: ['TrustedWidgetConfig', 'customRoute', 'POST /api/auth/login']
 	},
 	{
-		title: 'Соберите конфигурацию',
+		title: 'Старт для backend',
 		description:
-			'Сначала заполните appId и redirectUrl, затем добавьте profile, loginButton и menuButtons.'
+			'Упрощённый сценарий через oid-client: авторизация, получение профиля и вывод информации о пользователе в интерфейс.',
+		to: '/backend-start',
+		icon: StorageRounded,
+		accent: '#2A7F62',
+		chips: ['oid-client', 'profile', 'widget output']
+	}
+] as const;
+
+const nextSteps = [
+	{
+		title: 'Разобрать runtime-конфигурацию',
+		description:
+			'После выбора стартовой ветки откройте страницу конфигурации, чтобы собрать правильный TrustedWidgetConfig под свой проект.',
+		to: '/configuration',
+		icon: TaskAltRounded,
+		label: 'Конфигурация'
 	},
 	{
-		title: 'Настройте внешний вид',
+		title: 'Подогнать внешний вид и SSO',
 		description:
-			'Перейдите к customStyles, чтобы синхронизировать цвета, радиусы и поведение кнопок.'
-	},
-	{
-		title: 'Сверьте SSO',
-		description:
-			'Убедитесь, что redirectUrl в коде совпадает с redirect_uris в настройках сервиса SSO.'
+			'Когда сценарий запуска понятен, переходите к стилизации, правилам customStyles и финальной сверке redirect_uris.',
+		to: '/styling-and-integration',
+		icon: HubRounded,
+		label: 'Стилизация и интеграция'
 	}
 ] as const;
 
 export function HomePage() {
-	const quickstartSection = homeSections[0]!;
+	const variantsSection = homeSections[0]!;
 	const mapSection = homeSections[1]!;
 	const workflowSection = homeSections[2]!;
 
@@ -45,69 +62,43 @@ export function HomePage() {
 		<Stack spacing={4}>
 			<PageHeader
 				eyebrow="Старт"
-				title="Документация TrustedWidget в новом React shell"
-				description="Здесь собраны установка, базовый маршрут по документации и рабочая последовательность настройки виджета. Начните с пакета и затем пройдите по двум прикладным страницам: конфигурация и стилизация."
+				title="Выберите стартовый сценарий для TrustedWidget"
+				description="Стартовая страница теперь работает как обзорный хаб. Сначала выберите одну из двух веток запуска, а затем переходите к конфигурации и стилизации уже под свой сценарий интеграции."
 				sections={homeSections}
 			/>
 
 			<DocSection
-				id={quickstartSection.id}
-				title={quickstartSection.title}
-				description={quickstartSection.description}
-				icon={quickstartSection.icon}
+				id={variantsSection.id}
+				title={variantsSection.title}
+				description={variantsSection.description}
+				icon={variantsSection.icon}
 			>
 				<Stack spacing={2.5}>
 					<Typography variant="body1">
-						Для клиентского UI достаточно установить пакет <InlineCode>trusted-widget</InlineCode>{' '}
-						и затем передать объект <InlineCode>TrustedWidgetConfig</InlineCode> в компонент
-						виджета.
-					</Typography>
-					<CodeBlock
-						code={installSnippet}
-						language="bash"
-						label="Установка пакета"
-					/>
-					<Stack
-						direction="row"
-						sx={{ gap: 1, flexWrap: 'wrap' }}
-					>
-						<Chip label="npm install trusted-widget" color="primary" />
-						<Chip label="yarn add trusted-widget" variant="outlined" />
-						<Chip label="UI integration" variant="outlined" />
-					</Stack>
-				</Stack>
-			</DocSection>
-
-			<DocSection
-				id={mapSection.id}
-				title={mapSection.title}
-				description={mapSection.description}
-				icon={mapSection.icon}
-			>
-				<Stack spacing={2.5}>
-					<Typography variant="body1">
-						Документация разбита на три маршрута, чтобы команда быстрее находила нужную
-						часть интеграции и не терялась в одной длинной статье.
+						Если вам нужен полный поток между frontend, widget и backend, начинайте со
+						страницы <strong>Старт для frontend</strong>. Если хотите сначала собрать более
+						лёгкий вариант через <strong>oid-client</strong> и просто показать данные
+						пользователя в интерфейсе, переходите в <strong>Старт для backend</strong>.
 					</Typography>
 					<Stack
 						direction="row"
 						sx={{ flexWrap: 'wrap', gap: 2 }}
 					>
-						{docsRoutes.map((route) => {
-							const Icon = route.icon;
+						{startVariants.map((variant) => {
+							const Icon = variant.icon;
 
 							return (
 								<Paper
-									key={route.path}
+									key={variant.to}
 									component={Link}
-									to={route.path}
+									to={variant.to}
 									elevation={0}
 									sx={{
-										flex: '1 1 260px',
-										minWidth: { xs: '100%', sm: 260 },
-										p: 2.5,
+										flex: '1 1 300px',
+										minWidth: { xs: '100%', md: 300 },
+										p: 3,
 										borderRadius: 4,
-										backgroundColor: 'rgba(255, 255, 255, 0.78)',
+										backgroundColor: 'rgba(255, 255, 255, 0.82)',
 										transition: 'transform 180ms ease, box-shadow 180ms ease',
 										'&:hover': {
 											transform: 'translateY(-4px)',
@@ -125,15 +116,85 @@ export function HomePage() {
 										>
 											<Chip
 												icon={<Icon />}
-												label={route.title}
+												label={variant.title}
 												sx={{
-													bgcolor: `${route.accent}14`,
+													bgcolor: `${variant.accent}16`,
 													color: 'text.primary',
-													'& .MuiChip-icon': { color: route.accent }
+													'& .MuiChip-icon': { color: variant.accent }
 												}}
 											/>
-											<ArrowForwardRounded sx={{ color: route.accent }} />
+											<ArrowForwardRounded sx={{ color: variant.accent }} />
 										</Stack>
+										<Typography
+											variant="body2"
+											color="text.secondary"
+										>
+											{variant.description}
+										</Typography>
+										<Stack
+											direction="row"
+											sx={{ gap: 1, flexWrap: 'wrap' }}
+										>
+											{variant.chips.map((chip) => (
+												<Chip
+													key={chip}
+													label={chip}
+													variant="outlined"
+												/>
+											))}
+										</Stack>
+									</Stack>
+								</Paper>
+							);
+						})}
+					</Stack>
+				</Stack>
+			</DocSection>
+
+			<DocSection
+				id={mapSection.id}
+				title={mapSection.title}
+				description={mapSection.description}
+				icon={mapSection.icon}
+			>
+				<Stack spacing={2.5}>
+					<Typography variant="body1">
+						Теперь документация разбита на пять основных маршрутов: обзорный старт, две
+						стартовые ветки, конфигурация и стилизация. Это помогает отдельно документировать
+						полный поток интеграции и более лёгкий сценарий через oid-client.
+					</Typography>
+					<Stack
+						direction="row"
+						sx={{ flexWrap: 'wrap', gap: 2 }}
+					>
+						{docsRoutes.map((route) => {
+							const Icon = route.icon;
+
+							return (
+								<Paper
+									key={route.path}
+									component={Link}
+									to={route.path}
+									elevation={0}
+									sx={{
+										flex: '1 1 240px',
+										minWidth: { xs: '100%', sm: 240 },
+										p: 2.5,
+										borderRadius: 4,
+										backgroundColor: 'rgba(255, 255, 255, 0.78)'
+									}}
+								>
+									<Stack spacing={1.5}>
+										<Chip
+											icon={<Icon />}
+											label={route.title}
+											sx={{
+												alignSelf: 'flex-start',
+												bgcolor: `${route.accent}14`,
+												color: 'text.primary',
+												'& .MuiChip-icon': { color: route.accent }
+											}}
+										/>
 										<Typography
 											variant="body2"
 											color="text.secondary"
@@ -156,60 +217,54 @@ export function HomePage() {
 			>
 				<Stack spacing={2.5}>
 					<Typography variant="body1">
-						Если делаете интеграцию впервые, придерживайтесь последовательности ниже. Она
-						сводит к минимуму лишние возвраты между кодом, стилизацией и SSO.
+						После выбора стартового сценария не обязательно читать всё подряд. Дальше лучше
+						открывать только те страницы, которые помогают закрыть ваш следующий шаг.
 					</Typography>
 					<Stack spacing={1.5}>
-						{workflowSteps.map((step, index) => (
-							<Paper
-								key={step.title}
-								elevation={0}
-								sx={{
-									display: 'flex',
-									gap: 2,
-									alignItems: 'flex-start',
-									p: 2,
-									borderRadius: 4,
-									backgroundColor: 'rgba(255, 255, 255, 0.7)'
-								}}
-							>
-								<Chip
-									label={`${index + 1}`}
-									color="secondary"
-									sx={{ minWidth: 40, fontWeight: 800 }}
-								/>
-								<Stack spacing={0.5}>
-									<Typography variant="subtitle1">{step.title}</Typography>
-									<Typography
-										variant="body2"
-										color="text.secondary"
-									>
-										{step.description}
-									</Typography>
-								</Stack>
-							</Paper>
-						))}
-					</Stack>
-					<Stack
-						direction={{ xs: 'column', sm: 'row' }}
-						spacing={1.5}
-					>
-						<Button
-							component={Link}
-							to="/configuration"
-							variant="contained"
-							startIcon={<TaskAltRounded />}
-						>
-							Открыть конфигурацию
-						</Button>
-						<Button
-							component={Link}
-							to="/styling-and-integration"
-							variant="outlined"
-							startIcon={<HubRounded />}
-						>
-							Открыть стилизацию и интеграцию
-						</Button>
+						{nextSteps.map((step) => {
+							const Icon = step.icon;
+
+							return (
+								<Paper
+									key={step.to}
+									elevation={0}
+									sx={{
+										p: 2.5,
+										borderRadius: 4,
+										backgroundColor: 'rgba(255, 255, 255, 0.72)'
+									}}
+								>
+									<Stack spacing={1.5}>
+										<Stack
+											direction="row"
+											sx={{ alignItems: 'center', gap: 1.5 }}
+										>
+											<Chip
+												icon={<Icon />}
+												label={step.label}
+												color="primary"
+											/>
+										</Stack>
+										<Typography variant="subtitle1">{step.title}</Typography>
+										<Typography
+											variant="body2"
+											color="text.secondary"
+										>
+											{step.description}
+										</Typography>
+										<Button
+											component={Link}
+											to={step.to}
+											variant="outlined"
+											endIcon={<ArrowForwardRounded />}
+											sx={{ alignSelf: 'flex-start' }}
+										>
+											Открыть страницу
+										</Button>
+									</Stack>
+								</Paper>
+							);
+						})}
 					</Stack>
 				</Stack>
 			</DocSection>

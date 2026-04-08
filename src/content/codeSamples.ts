@@ -253,3 +253,55 @@ export const menuButtonsPrioritySnippet = String.raw`const config: TrustedWidget
 };`;
 
 export const redirectUrisSnippet = String.raw`http://localhost:3000/login`;
+
+export const frontendLocalPackageSnippet = String.raw`{
+  "dependencies": {
+    "trusted-widget": "file:./vendor/trusted-widget"
+  }
+}`;
+
+export const frontendTrustedWidgetSnippet = String.raw`const config: TrustedWidgetConfig = {
+  appId: appId,
+  redirectUrl: redirectUrl,
+  issuer: env.trustedWidgetIssuer,
+  withOutHomePage: !currentUser,
+  customRoute: (token) => {
+    handleTokenSync(token);
+  },
+  scopes: ['email'],
+  logoutButtonFn: handleLogout,
+  loginButton: {
+    text: 'Войти через SSO',
+  },
+};
+
+<TrustedWidget config={config} />;`;
+
+export const frontendTokenSyncSnippet = String.raw`async function handleTokenSync(accessToken: string) {
+  await fetch('/api/auth/login', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    credentials: 'include',
+    body: JSON.stringify({ accessToken }),
+  });
+}`;
+
+export const backendSsoProfileSnippet = String.raw`GET {SSO_BASE_URL}/oidc/me
+
+Authorization: Bearer <accessToken>
+Accept: application/json`;
+
+export const oidClientSnippet = String.raw`import { UserManager } from 'oidc-client-ts';
+
+const userManager = new UserManager({
+  authority: env.trustedWidgetIssuer,
+  client_id: appId,
+  redirect_uri: redirectUrl,
+  response_type: 'code',
+  scope: 'openid email profile',
+});
+
+const user = await userManager.signinRedirectCallback();
+const profile = user.profile;`;

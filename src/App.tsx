@@ -8,6 +8,12 @@ import { DocsLayout } from './layout/DocsLayout';
 
 const basename = import.meta.env.BASE_URL.replace(/\/$/, '');
 const HomePage = lazy(async () => ({ default: (await import('./pages/HomePage')).HomePage }));
+const FrontendStartPage = lazy(
+	async () => ({ default: (await import('./pages/FrontendStartPage')).FrontendStartPage })
+);
+const BackendStartPage = lazy(
+	async () => ({ default: (await import('./pages/BackendStartPage')).BackendStartPage })
+);
 const ConfigurationPage = lazy(
 	async () => ({ default: (await import('./pages/ConfigurationPage')).ConfigurationPage })
 );
@@ -68,6 +74,14 @@ export default function App() {
 						<Route
 							path="/"
 							element={<HomePage />}
+						/>
+						<Route
+							path="/frontend-start"
+							element={<FrontendStartPage />}
+						/>
+						<Route
+							path="/backend-start"
+							element={<BackendStartPage />}
 						/>
 						<Route
 							path="/configuration"
